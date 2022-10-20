@@ -5,11 +5,16 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Entity @Getter @Setter @AllArgsConstructor @NoArgsConstructor
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name="roles")
 public class Role {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @NonNull @Column(unique = true)
     private String roleName;
 
