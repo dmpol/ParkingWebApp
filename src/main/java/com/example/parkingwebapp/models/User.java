@@ -13,7 +13,7 @@ import java.util.Set;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="users")
+@Table(name="user")
 public class User {
     @Id @ToString.Exclude
     @GeneratedValue(strategy = GenerationType.AUTO)
