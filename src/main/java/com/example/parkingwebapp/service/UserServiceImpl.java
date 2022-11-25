@@ -4,7 +4,6 @@ import com.example.parkingwebapp.models.Role;
 import com.example.parkingwebapp.models.User;
 import com.example.parkingwebapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,10 +13,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.List;
 
-@Service @RequiredArgsConstructor @Transactional
+@Service
+@RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserDetailsService, UserService {
     private final UserRepository userRepository;
 
@@ -28,8 +28,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             throw new UsernameNotFoundException("User not found");
         }
         List<SimpleGrantedAuthority> authorities = user.getRoles().stream().map(role ->
-                new SimpleGrantedAuthority(role.getRoleName())).toList();
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+                new SimpleGrantedAuthority("ROLE_" + role.getName())).toList();
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+                authorities);
     }
 
     @Override
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return byUserName.getRoles();
     }
 
-    protected PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder(12);
     }
 

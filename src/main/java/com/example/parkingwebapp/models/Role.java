@@ -1,8 +1,11 @@
 package com.example.parkingwebapp.models;
 
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -11,23 +14,53 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="role")
-public class Role {
+public class Role extends BaseModel implements GrantedAuthority {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @NonNull @Column(unique = true)
-    private String roleName;
+    private String name;
+    @ManyToMany(fetch= FetchType.EAGER, mappedBy = "roles")
+    private List<User> users = new ArrayList<>();
+
+//    @ManyToMany
+//    @JoinTable(name = "role_privileges",
+//            joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
+//    private List<Privilege> privileges;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         Role role = (Role) o;
-        return roleName.equals(role.roleName);
+        return name.equals(role.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roleName);
+        return Objects.hash(super.hashCode(), name);
+    }
+
+//    @Override
+//    public String toString() {
+//        return "Role{" +
+//                "name='" + name + '\'' +
+//                ", users=" + users +
+//                ", privileges=" + privileges +
+//                '}';
+//    }
+
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "name='" + name + '\'' +
+                ", users=" + users +
+                '}';
+    }
+
+    @Override
+    public String getAuthority() {
+        return getName();
     }
 }

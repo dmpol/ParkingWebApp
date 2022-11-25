@@ -1,6 +1,5 @@
 package com.example.parkingwebapp.config;
 
-import com.example.parkingwebapp.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +14,9 @@ import org.springframework.security.web.SecurityFilterChain;
 
 
 
-@Configuration @EnableWebSecurity @RequiredArgsConstructor
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig {
 
     @Autowired
@@ -26,6 +27,7 @@ public class WebSecurityConfig {
         http.authenticationProvider(authenticationProvider());
         http.csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
+                        .antMatchers("/data").hasAnyRole("ADMIN","USER")
                         .antMatchers("/", "/registration").permitAll()
                         .anyRequest().authenticated()
                 )
