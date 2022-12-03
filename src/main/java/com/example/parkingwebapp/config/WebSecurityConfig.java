@@ -28,6 +28,7 @@ public class WebSecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
                         .antMatchers("/data").hasAnyRole("ADMIN","USER")
+                        .antMatchers("/delete_user").hasAnyRole("ADMIN")
                         .antMatchers("/", "/registration").permitAll()
                         .anyRequest().authenticated()
                 )

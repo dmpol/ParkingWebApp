@@ -62,6 +62,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return byUserName.getRoles();
     }
 
+    @Override
+    public boolean setStatus(String userName, boolean status) {
+        User user = userRepository.findByUsername(userName);
+        if (user != null){
+            user.setStatus(status);
+            return true;
+        }
+        return false;
+    }
+
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder(12);
     }

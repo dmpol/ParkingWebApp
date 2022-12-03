@@ -16,6 +16,7 @@ public class User  extends BaseModel{
     private String lastName;
     private String username;
     private String password;
+    private boolean Status;
 
     @ToString.Exclude
     @ManyToMany(fetch = FetchType.EAGER)
@@ -47,6 +48,7 @@ public class User  extends BaseModel{
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", Status=" + Status +
                 ", roles=" + roles +
                 '}';
     }
