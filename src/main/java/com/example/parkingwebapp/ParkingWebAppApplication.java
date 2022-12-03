@@ -40,6 +40,10 @@ public class ParkingWebAppApplication {
             role.setName(RoleEnum.ADMIN.name());
             roleRepository.save(role);
 
+            Role roleStaff = new Role();
+            roleStaff.setName(RoleEnum.STAFF.name());
+            roleRepository.save(roleStaff);
+
             userService.addRoleToUser("admin", role);
             Role r = roleRepository.findByName(RoleEnum.ADMIN.name());
             List<User> lUser = r.getUsers();

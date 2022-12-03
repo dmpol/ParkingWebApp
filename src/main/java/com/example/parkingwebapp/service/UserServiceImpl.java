@@ -2,8 +2,10 @@ package com.example.parkingwebapp.service;
 
 import com.example.parkingwebapp.models.Role;
 import com.example.parkingwebapp.models.User;
+import com.example.parkingwebapp.repository.RoleRepository;
 import com.example.parkingwebapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -65,7 +67,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public boolean setStatus(String userName, boolean status) {
         User user = userRepository.findByUsername(userName);
-        if (user != null){
+        if (user != null) {
             user.setStatus(status);
             return true;
         }
