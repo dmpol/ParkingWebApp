@@ -12,4 +12,5 @@ public interface UserService {
     List<User> findAll();
     List<Role> addRoleToUser(String userName, Role role);
     List<Role> getUserRoles(String userName);
+    boolean setStatus(String userName, boolean status);
 }

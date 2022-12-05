@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@Controller @RequiredArgsConstructor
+@Controller
+@RequiredArgsConstructor
 public class UserController {
     @Autowired
     private UserServiceImpl userService;
@@ -47,6 +48,7 @@ public class UserController {
         u.setPassword(password);
         u.setFirstName(firstName);
         u.setLastName(lastName);
+        u.setStatus(true);
         userService.saveUser(u);
 
         Role userRole = roleRepository.findByName("USER");

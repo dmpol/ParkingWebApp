@@ -9,10 +9,12 @@
         <header th:insert="blocks/header :: header"></header>
 
         <div class="container mt-5">
-            <h1>Все пользователи</h1>
-            <div th:each="el : ${users}" class="alert alert-info mt-2">
-                <h3 th:text="${el.username}"/>
+            <h2>Все пользователи</h2>
+            <div th:each="el, s : ${users}" class="alert alert-info mt-2">
+                <h3 th:text="${s.count}"/>
+                <p th:text="${el.username}"/>
                 <p th:text="${el.password}"/>
+                <p th:text="${el.status}"/>
             </div>
         </div>
 
