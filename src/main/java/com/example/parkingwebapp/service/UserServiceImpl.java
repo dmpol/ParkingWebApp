@@ -74,6 +74,17 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return false;
     }
 
+    public boolean deleteUser(String userName){
+        User user = userRepository.findByUsername(userName);
+
+        if (user == null) {
+            return false;
+        }
+
+        userRepository.delete(user);
+        return true;
+    }
+
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder(12);
     }

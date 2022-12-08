@@ -1,5 +1,6 @@
 package com.example.parkingwebapp.controller;
 
+import com.example.parkingwebapp.Facade.IAuthenticationFacade;
 import com.example.parkingwebapp.models.Role;
 import com.example.parkingwebapp.models.RoleEnum;
 import com.example.parkingwebapp.models.User;
@@ -7,11 +8,10 @@ import com.example.parkingwebapp.repository.RoleRepository;
 import com.example.parkingwebapp.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,9 +20,10 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserServiceImpl userService;
-
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private IAuthenticationFacade authenticationFacade;
 
     @GetMapping("/data")
     public String getAllUsers(Model model){
@@ -65,4 +66,16 @@ public class UserController {
 
         return "redirect:/data";
     }
+
+    @GetMapping(value = "/me")
+    //@ResponseBody //ответ автоматически сериализуется в JSON
+    public String currentUserNameSimple(Model model){
+        Authentication authentication = authenticationFacade.getAuthentication();
+        User user = userService.getUser(authentication.getName());
+        List<Role> roles = userService.getUserRoles(authentication.getName());
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roles);
+        return "me";
+    }
+
 }

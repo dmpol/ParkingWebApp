@@ -9,7 +9,7 @@
         <header th:insert="blocks/header :: header"></header>
         <div class="container mt-5 mb-5">
             <h2>Добавить роль</h2>
-            <form action="/set_roles" method="post">
+            <form th:action="@{/set_roles}" method="post">
                 <input type="text" name="userName" placeholder="Введите Имя Пользователя" class="form-control"><br>
                     <select name="roles">
                         <option th:each="el : ${roles}"
