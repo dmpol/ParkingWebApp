@@ -1,5 +1,6 @@
 package com.example.parkingwebapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -18,6 +19,7 @@ public class Role extends BaseModel implements GrantedAuthority {
 
     @NonNull @Column(unique = true)
     private String name;
+    @JsonIgnore
     @ManyToMany(fetch= FetchType.EAGER, mappedBy = "roles")
     private List<User> users = new ArrayList<>();
 

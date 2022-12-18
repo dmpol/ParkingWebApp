@@ -49,7 +49,6 @@ public class UserController {
         u.setPassword(password);
         u.setFirstName(firstName);
         u.setLastName(lastName);
-        u.setStatus(true);
         userService.saveUser(u);
 
         Role userRole = roleRepository.findByName("USER");

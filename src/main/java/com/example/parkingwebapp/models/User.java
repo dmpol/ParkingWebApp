@@ -1,5 +1,7 @@
 package com.example.parkingwebapp.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
 import java.util.*;
@@ -16,9 +18,12 @@ public class User  extends BaseModel{
     private String lastName;
     private String username;
     private String password;
+    //@JsonFormat(shape = JsonFormat.Shape.NUMBER)
+    @JsonIgnore
     private boolean Status;
 
     @ToString.Exclude
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",

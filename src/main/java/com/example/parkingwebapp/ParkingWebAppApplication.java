@@ -33,7 +33,6 @@ public class ParkingWebAppApplication {
             user = new User();
             user.setUsername("admin");
             user.setPassword("admin");
-            user.setStatus(true);
             userService.saveUser(user);
 
             Role role = new Role();
