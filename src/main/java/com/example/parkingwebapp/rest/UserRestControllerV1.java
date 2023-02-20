@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -47,7 +48,7 @@ public class UserRestControllerV1 {
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        userService.deleteUser(user.getUsername());
+
         userService.saveUser(user);
 
         Role userRole = roleRepository.findByName("USER");
@@ -72,10 +73,30 @@ public class UserRestControllerV1 {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
+        User userDB = userService.getUser(user.getUsername());
+        if (userDB == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        userService.deleteUser(user.getUsername());
+
         userService.saveUser(user);
+
+        Role userRole = roleRepository.findByName("USER");
+        if(userRole == null) {
+            userRole = new Role();
+            userRole.setName(RoleEnum.USER.name());
+            roleRepository.save(userRole);
+        }
+
+        userService.addRoleToUser(user.getUsername(), userRole);
+        Role r = roleRepository.findByName("USER");
+        List<User> lUser = r.getUsers();
+        lUser.add(user);
         return new ResponseEntity<>(user, headers, HttpStatus.OK);
     }
 
+//    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "{username}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> deleteUser(@PathVariable("username") String userName) {
         User user = userService.getUser(userName);

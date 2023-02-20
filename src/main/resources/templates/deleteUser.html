@@ -9,7 +9,7 @@
 <header th:insert="blocks/header :: header"></header>
 <div class="container mt-5 mb-5">
     <h2>Удаление пользователя</h2>
-    <form th:action="@{/delete_user}" method="post">
+    <form th:action="@{/admin/delete_user}" method="post">
         <input type="text" name="userName" placeholder="Введите Имя Пользователя" class="form-control"><br>
         <button type="submit" class="btn btn-success">Удалить пользователя</button>
     </form>

@@ -1,7 +1,10 @@
 package com.example.parkingwebapp.controller;
 
+import com.example.parkingwebapp.models.Place;
 import com.example.parkingwebapp.models.Role;
+import com.example.parkingwebapp.repository.PlaceRepository;
 import com.example.parkingwebapp.repository.RoleRepository;
+import com.example.parkingwebapp.service.PlaceUserService;
 import com.example.parkingwebapp.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,11 +18,11 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-
     private UserServiceImpl userService;
-
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private PlaceUserService placeService;
 
     @GetMapping("/delete_user")
     public String delete(Model model){
@@ -29,6 +32,7 @@ public class AdminController {
     @PostMapping("/delete_user")
     public String deleteUser(@RequestParam String userName){
         userService.setStatus(userName, false);
+        placeService.removeAllPlacesUser(userName);
         return "redirect:/data";
     }
 

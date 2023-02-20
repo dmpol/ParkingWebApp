@@ -15,6 +15,9 @@
         <div th:each="el, s : ${roles}">
             <span th:text="${el.name}"/>
         </div>
+        <div th:each="el, s : ${places}">
+            <span th:text="${el.numberPlace}"/>
+        </div>
     </div>
 </div>
 

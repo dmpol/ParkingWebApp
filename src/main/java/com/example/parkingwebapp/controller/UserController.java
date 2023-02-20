@@ -1,6 +1,7 @@
 package com.example.parkingwebapp.controller;
 
 import com.example.parkingwebapp.Facade.IAuthenticationFacade;
+import com.example.parkingwebapp.models.Place;
 import com.example.parkingwebapp.models.Role;
 import com.example.parkingwebapp.models.RoleEnum;
 import com.example.parkingwebapp.models.User;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -72,8 +74,12 @@ public class UserController {
         Authentication authentication = authenticationFacade.getAuthentication();
         User user = userService.getUser(authentication.getName());
         List<Role> roles = userService.getUserRoles(authentication.getName());
+        List<Place> places = user.getPlaces().stream()
+                .filter(place -> place.isStatusPlace() == true)
+                .collect(Collectors.toList());
         model.addAttribute("user", user);
         model.addAttribute("roles", roles);
+        model.addAttribute("places", places);
         return "me";
     }
 

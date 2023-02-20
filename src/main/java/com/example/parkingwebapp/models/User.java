@@ -3,6 +3,10 @@ package com.example.parkingwebapp.models;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.util.*;
 
@@ -18,9 +22,12 @@ public class User  extends BaseModel{
     private String lastName;
     private String username;
     private String password;
+
     //@JsonFormat(shape = JsonFormat.Shape.NUMBER)
     @JsonIgnore
-    private boolean Status;
+    @Column(name = "is_status_user", columnDefinition = "BIT")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean statusUser;
 
     @ToString.Exclude
     @JsonIgnore
@@ -31,6 +38,20 @@ public class User  extends BaseModel{
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
     private List<Role> roles = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    List<Place> places = new ArrayList<>();
+
+    public void addPlace(Place place) {
+        places.add(place);
+        place.setUser(this);
+    }
+
+    public void removePlace(Place place) {
+        places.remove(place);
+        place.setStatusPlace(false);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -53,7 +74,7 @@ public class User  extends BaseModel{
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", Status=" + Status +
+                ", Status=" + statusUser +
                 ", roles=" + roles +
                 '}';
     }

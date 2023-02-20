@@ -1,11 +1,15 @@
 package com.example.parkingwebapp.service;
 
+import com.example.parkingwebapp.models.Place;
 import com.example.parkingwebapp.models.Role;
 import com.example.parkingwebapp.models.User;
-import com.example.parkingwebapp.repository.RoleRepository;
+import com.example.parkingwebapp.repository.PlaceRepository;
 import com.example.parkingwebapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +34,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         log.info("IN UserServiceImpl loadUserByUsername");
 
         User user = userRepository.findByUsername(username);
-        if (user==null) {
+        if (user==null || user.isStatusUser() == false) {
             log.info("IN UserServiceImpl loadUserByUsername - user {} - not found!", username);
             throw new UsernameNotFoundException("User not found");
         }
@@ -48,7 +52,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
         try {
             if (user != null) {
-                user.setStatus(true);
+                user.setStatusUser(true);
                 user.setPassword(passwordEncoder().encode(user.getPassword()));
                 log.info("IN UserServiceImpl saveUser - user {} - save", user.getUsername());
             } else {
@@ -124,7 +128,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         User user = userRepository.findByUsername(userName);
         if (user != null) {
             log.info("IN UserServiceImpl setStatus - {} - found!", userName);
-            user.setStatus(status);
+            user.setStatusUser(status);
             log.info("IN UserServiceImpl setStatus - User {} - has changed the Status!", userName);
             return true;
         } else {
@@ -133,20 +137,20 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return false;
     }
 
-    public boolean deleteUser(String userName){
+    public boolean deleteUser(String userName) {
         log.info("IN UserServiceImpl deleteUser");
 
         User user = userRepository.findByUsername(userName);
         if (user != null) {
-            userRepository.delete(user);
+            user.setStatusUser(false);
             log.info("IN UserServiceImpl deleteUser - {} - deleted!", userName);
             return true;
-        }
-        else {
+        } else {
             log.info("IN UserServiceImpl deleteUser - {} - not found!", userName);
         }
         return false;
     }
+
 
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder(12);
