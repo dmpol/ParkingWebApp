@@ -9,7 +9,7 @@
 <header th:insert="blocks/header :: header"></header>
 <div class="container mt-5 mb-5">
   <h2>Редактировать место</h2>
-  <form th:action="@{/edit_place}" method="post">
+  <form th:action="@{/general/edit_place}" method="post">
     <input type="text" name="numberPlace" placeholder="Введите номер парковочного места" class="form-control"><br>
     <input type="radio" name="choice" value="1" checked="checked"/> Добавить место
     <input type="radio" name="choice" value="0"/> Удалить место <br><br>

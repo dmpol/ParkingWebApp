@@ -1,6 +1,5 @@
 package com.example.parkingwebapp.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,10 @@ import lombok.Setter;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
@@ -16,11 +18,11 @@ import java.util.Objects;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="place")
-public class Place extends BaseModel{
-    private String numberPlace;
-    private boolean isEmpty;
-    private boolean statusPlace;
+@Table(name="car")
+public class Car extends BaseModel{
+    private String registrationNumber;
+    private boolean statusCar;
+
     @ManyToOne
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "user_id", nullable = false)
@@ -31,12 +33,12 @@ public class Place extends BaseModel{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        Place place = (Place) o;
-        return isEmpty == place.isEmpty && statusPlace == place.statusPlace && Objects.equals(numberPlace, place.numberPlace) && Objects.equals(user, place.user);
+        Car car = (Car) o;
+        return statusCar == car.statusCar && Objects.equals(registrationNumber, car.registrationNumber) && Objects.equals(user, car.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), numberPlace, isEmpty, statusPlace, user);
+        return Objects.hash(super.hashCode(), registrationNumber, statusCar, user);
     }
 }

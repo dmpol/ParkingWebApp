@@ -1,11 +1,12 @@
 package com.example.parkingwebapp.controller;
 
-import com.example.parkingwebapp.Facade.IAuthenticationFacade;
+import com.example.parkingwebapp.facade.IAuthenticationFacade;
 import com.example.parkingwebapp.models.Place;
 import com.example.parkingwebapp.models.Role;
 import com.example.parkingwebapp.models.RoleEnum;
 import com.example.parkingwebapp.models.User;
 import com.example.parkingwebapp.repository.RoleRepository;
+import com.example.parkingwebapp.service.CarUserService;
 import com.example.parkingwebapp.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class UserController {
     private RoleRepository roleRepository;
     @Autowired
     private IAuthenticationFacade authenticationFacade;
+    @Autowired
+    private CarUserService carService;
 
     @GetMapping("/data")
     public String getAllUsers(Model model){
@@ -80,6 +83,7 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("roles", roles);
         model.addAttribute("places", places);
+        model.addAttribute("cars", carService.getAllValidCarsUser(user.getUsername()));
         return "me";
     }
 

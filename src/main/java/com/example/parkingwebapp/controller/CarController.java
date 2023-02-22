@@ -1,8 +1,8 @@
 package com.example.parkingwebapp.controller;
 
 import com.example.parkingwebapp.facade.IAuthenticationFacade;
-import com.example.parkingwebapp.models.Place;
-import com.example.parkingwebapp.service.PlaceUserService;
+import com.example.parkingwebapp.models.Car;
+import com.example.parkingwebapp.service.CarUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -16,28 +16,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/general")
-public class PlaceController {
+public class CarController {
     @Autowired
-    private PlaceUserService placeService;
+    public CarUserService carService;
     @Autowired
     private IAuthenticationFacade authenticationFacade;
 
-    @GetMapping("/edit_place")
-    public String editPlace(Model model){
-        return "editPlace";
+    @GetMapping("/edit_car")
+    public String editCar(Model model){
+        return "editCar";
     }
 
-    @PostMapping("/edit_place")
-    public String editUserPlace(@RequestParam String numberPlace, @RequestParam String choice){
+    @PostMapping("/edit_car")
+    public String editUserCar(@RequestParam String registrationNumber, @RequestParam String choice){
         Authentication authentication = authenticationFacade.getAuthentication();
-        Place place = new Place();
-        place.setNumberPlace(numberPlace);
-        place.setEmpty(true);
-        place.setStatusPlace(true);
+        Car car = new Car();
+        car.setRegistrationNumber(registrationNumber);
+        car.setStatusCar(true);
         if (choice.equals("1")) {
-            placeService.addPlaceUser(authentication.getName(), place);
+            carService.addCarUser(authentication.getName(), car);
         } else if (choice.equals("0")) {
-            placeService.removePlaceUser(authentication.getName(), place);
+            carService.removeCarUser(authentication.getName(), car);
         }
         return "redirect:/me";
     }

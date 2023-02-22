@@ -9,7 +9,7 @@
 <header th:insert="blocks/header :: header"></header>
 
 <div class="container mt-5">
-    <h2>ЛК</h2>
+    <h2>Личный кабинет</h2>
     <div class="alert alert-info mt-2">
         <h3 th:text="${user.username}"/>
         <div th:each="el, s : ${roles}">
@@ -17,6 +17,9 @@
         </div>
         <div th:each="el, s : ${places}">
             <span th:text="${el.numberPlace}"/>
+        </div>
+        <div th:each="el, s : ${cars}">
+            <span th:text="${el.registrationNumber}"/>
         </div>
     </div>
 </div>

@@ -81,8 +81,8 @@ public class PlaceUserService {
                 .collect(Collectors.toList());
     }
 
-    public List<Place> getAllValidPlaceUser(String userName) {
-        log.info("IN PlaceUserService getAllValidPlaceUser");
+    public List<Place> getAllValidPlacesUser(String userName) {
+        log.info("IN PlaceUserService getAllValidPlacesUser");
         User user = userService.getUser(userName);
         return user.getPlaces().stream()
                 .filter(place -> place.isStatusPlace() == true)
@@ -90,8 +90,8 @@ public class PlaceUserService {
     }
 
     public boolean removeAllPlacesUser(String userName) {
-        log.info("IN PlaceUserService removeAllPlaceUser");
-        List<Place> places = getAllValidPlaceUser(userName);
+        log.info("IN PlaceUserService removeAllPlacesUser");
+        List<Place> places = getAllValidPlacesUser(userName);
         if (!places.isEmpty()) {
             for (Place p : places) {
                 removePlaceUser(userName, p);

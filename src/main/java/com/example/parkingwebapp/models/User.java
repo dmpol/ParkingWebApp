@@ -43,6 +43,10 @@ public class User  extends BaseModel{
     @LazyCollection(LazyCollectionOption.FALSE)
     List<Place> places = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    List<Car> cars = new ArrayList<>();
+
     public void addPlace(Place place) {
         places.add(place);
         place.setUser(this);
@@ -51,6 +55,16 @@ public class User  extends BaseModel{
     public void removePlace(Place place) {
         places.remove(place);
         place.setStatusPlace(false);
+    }
+
+    public void addCar(Car car) {
+        cars.add(car);
+        car.setUser(this);
+    }
+
+    public void removeCar(Car car) {
+        cars.remove(car);
+        car.setStatusCar(false);
     }
 
     @Override

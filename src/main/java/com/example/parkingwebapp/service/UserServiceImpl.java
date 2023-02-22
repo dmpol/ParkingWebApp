@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         log.info("IN UserServiceImpl loadUserByUsername");
 
         User user = userRepository.findByUsername(username);
-        if (user==null || user.isStatusUser() == false) {
+        if (user==null) {
             log.info("IN UserServiceImpl loadUserByUsername - user {} - not found!", username);
             throw new UsernameNotFoundException("User not found");
         }
@@ -104,6 +104,20 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             log.info("IN UserServiceImpl addRoleToUser - {} - not found!", userName);
         }
         return null;
+    }
+
+    public boolean removeRoleToUser(String userName, Role role) {
+        log.info("IN UserServiceImpl removeRoleToUser");
+
+        User byUserName = getUser(userName);
+        if (byUserName != null){
+            byUserName.getRoles().remove(role);
+            log.info("IN UserServiceImpl removeRoleToUser - role has been removed to the user - {}", userName);
+            return true;
+        } else {
+            log.info("IN UserServiceImpl removeRoleToUser - {} - not found!", userName);
+        }
+        return false;
     }
 
     @Override
