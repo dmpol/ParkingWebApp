@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class InitializeAdminConfig {
@@ -47,7 +48,7 @@ public class InitializeAdminConfig {
 
             userService.addRoleToUser(name, role);
             Role r = roleRepository.findByName(RoleEnum.ADMIN.name());
-            List<User> lUser = r.getUsers();
+            Set<User> lUser = r.getUsers();
             lUser.add(userService.getUser(name));
         }
     }

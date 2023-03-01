@@ -5,9 +5,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Getter
@@ -21,7 +19,7 @@ public class Role extends BaseModel implements GrantedAuthority {
     private String name;
     @JsonIgnore
     @ManyToMany(fetch= FetchType.EAGER, mappedBy = "roles")
-    private List<User> users = new ArrayList<>();
+    private Set<User> users = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

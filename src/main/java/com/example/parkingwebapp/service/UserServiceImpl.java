@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
@@ -34,14 +35,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         log.info("IN UserServiceImpl loadUserByUsername");
 
         User user = userRepository.findByUsername(username);
-        if (user==null) {
+        if (user==null || user.isStatusUser() == false) {
             log.info("IN UserServiceImpl loadUserByUsername - user {} - not found!", username);
             throw new UsernameNotFoundException("User not found");
         }
 
         log.info("IN UserServiceImpl loadUserByUsername - user {} - found!", username);
-        List<SimpleGrantedAuthority> authorities = user.getRoles().stream().map(role ->
-                new SimpleGrantedAuthority("ROLE_" + role.getName())).toList();
+        List<SimpleGrantedAuthority> authorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+                .toList();
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 authorities);
     }
@@ -91,7 +93,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public List<Role> addRoleToUser(String userName, Role role) {
+    public Set<Role> addRoleToUser(String userName, Role role) {
         log.info("IN UserServiceImpl addRoleToUser");
 
         User byUserName = userRepository.findByUsername(userName);
@@ -121,7 +123,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public List<Role> getUserRoles(String userName) {
+    public Set<Role> getUserRoles(String userName) {
         log.info("IN UserServiceImpl getUserRoles");
 
         User byUserName = userRepository.findByUsername(userName);

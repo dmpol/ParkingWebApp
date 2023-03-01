@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -65,7 +66,7 @@ public class UserController {
 
         userService.addRoleToUser(username, userRole);
         Role r = roleRepository.findByName("USER");
-        List<User> lUser = r.getUsers();
+        Set<User> lUser = r.getUsers();
         lUser.add(userService.getUser(username));
 
         return "redirect:/data";
@@ -76,7 +77,7 @@ public class UserController {
     public String currentUserNameSimple(Model model){
         Authentication authentication = authenticationFacade.getAuthentication();
         User user = userService.getUser(authentication.getName());
-        List<Role> roles = userService.getUserRoles(authentication.getName());
+        Set<Role> roles = userService.getUserRoles(authentication.getName());
         List<Place> places = user.getPlaces().stream()
                 .filter(place -> place.isStatusPlace() == true)
                 .collect(Collectors.toList());

@@ -34,11 +34,11 @@ public class Car extends BaseModel{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Car car = (Car) o;
-        return statusCar == car.statusCar && Objects.equals(registrationNumber, car.registrationNumber) && Objects.equals(user, car.user);
+        return statusCar == car.statusCar && Objects.equals(registrationNumber, car.registrationNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), registrationNumber, statusCar, user);
+        return Objects.hash(super.hashCode(), registrationNumber);
     }
 }

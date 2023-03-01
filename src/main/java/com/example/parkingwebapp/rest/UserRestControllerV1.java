@@ -16,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/users/")
@@ -60,7 +61,7 @@ public class UserRestControllerV1 {
 
         userService.addRoleToUser(user.getUsername(), userRole);
         Role r = roleRepository.findByName("USER");
-        List<User> lUser = r.getUsers();
+        Set<User> lUser = r.getUsers();
         lUser.add(user);
         return new ResponseEntity<>(user, headers, HttpStatus.CREATED);
     }
@@ -91,7 +92,7 @@ public class UserRestControllerV1 {
 
         userService.addRoleToUser(user.getUsername(), userRole);
         Role r = roleRepository.findByName("USER");
-        List<User> lUser = r.getUsers();
+        Set<User> lUser = r.getUsers();
         lUser.add(user);
         return new ResponseEntity<>(user, headers, HttpStatus.OK);
     }

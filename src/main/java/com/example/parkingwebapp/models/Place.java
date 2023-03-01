@@ -32,11 +32,11 @@ public class Place extends BaseModel{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Place place = (Place) o;
-        return isEmpty == place.isEmpty && statusPlace == place.statusPlace && Objects.equals(numberPlace, place.numberPlace) && Objects.equals(user, place.user);
+        return isEmpty == place.isEmpty && statusPlace == place.statusPlace && Objects.equals(numberPlace, place.numberPlace);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), numberPlace, isEmpty, statusPlace, user);
+        return Objects.hash(super.hashCode(), numberPlace);
     }
 }

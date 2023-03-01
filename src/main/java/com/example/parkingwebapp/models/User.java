@@ -1,6 +1,5 @@
 package com.example.parkingwebapp.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.LazyCollection;
@@ -37,7 +36,17 @@ public class User  extends BaseModel{
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
-    private List<Role> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>();
+
+    @ToString.Exclude
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_advertisements",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "advertisement_id", referencedColumnName = "id")
+    )
+    private Set<Advertisement> advertisements = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -53,6 +62,12 @@ public class User  extends BaseModel{
     }
 
     public void removePlace(Place place) {
+//        ArrayList<Place> placeList = new ArrayList<>(places);
+//        for (Place place1 : placeList) {
+//            if (place1.equals(place)) {
+//                places.remove(place);
+//            }
+//        }
         places.remove(place);
         place.setStatusPlace(false);
     }
@@ -63,6 +78,12 @@ public class User  extends BaseModel{
     }
 
     public void removeCar(Car car) {
+//        ArrayList<Car> carList = new ArrayList<>(cars);
+//        for (Car car1 : carList) {
+//            if (car1.equals(car)) {
+//                cars.remove(car);
+//            }
+//        }
         cars.remove(car);
         car.setStatusCar(false);
     }

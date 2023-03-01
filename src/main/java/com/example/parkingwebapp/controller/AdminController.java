@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -50,7 +51,7 @@ public class AdminController {
     @PostMapping("/edit_roles")
     public String addUserRole(@RequestParam String userName, @RequestParam String roles, @RequestParam String choice){
         Role role = roleRepository.findByName(roles);
-        List<Role> roleList = userService.getUserRoles(userName);
+        Set<Role> roleList = userService.getUserRoles(userName);
         if (choice.equals("1")) {
             if (!roleList.contains(role)) {
                 userService.addRoleToUser(userName, role);
