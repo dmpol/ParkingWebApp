@@ -100,4 +100,14 @@ public class PlaceUserService {
         }
         return false;
     }
+
+    public Place getPlaceId(Long id) {
+        List<Place> placeList = getAllValidPlaceInDB().stream()
+                .filter(place -> place.getId()==id)
+                .collect(Collectors.toList());
+        if (!placeList.isEmpty()) {
+            return placeList.get(0);
+        }
+        return null;
+    }
 }

@@ -19,6 +19,7 @@
             <option th:each="el : ${places}"
                     th:text="${el.numberPlace}"></option>
         </select><br><br>
+        <textarea name="comments" cols="20" rows="4" placeholder="Если необходимо, оставьте комментарий..."></textarea><br><br>
 
         <button type="submit" class="btn btn-success">Отправить</button>
     </form>

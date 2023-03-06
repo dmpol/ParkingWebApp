@@ -1,6 +1,7 @@
 package com.example.parkingwebapp.service;
 
 import com.example.parkingwebapp.models.Advertisement;
+import com.example.parkingwebapp.models.Place;
 import com.example.parkingwebapp.models.User;
 import com.example.parkingwebapp.repository.AdvertisementRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,16 @@ public class AdvertisementService {
                 .filter(advertisement -> advertisement.isOffer() == true)
                 .filter(advertisement -> advertisement.isApproval() == false)
                 .collect(Collectors.toList());
+    }
+
+    public Advertisement getAdsId(Long id) {
+        List<Advertisement> adsList = getAllFreeValidAds().stream()
+                .filter(place -> place.getId()==id)
+                .collect(Collectors.toList());
+        if (!adsList.isEmpty()) {
+            return adsList.get(0);
+        }
+        return null;
     }
 
     public List<Advertisement> getAllFreeValidDemandAds() {
@@ -91,6 +102,26 @@ public class AdvertisementService {
             return true;
         }
         return false;
+    }
+
+    public void addAgreeInAds(String userName, String id, String registrationNumber) {
+        log.info("IN AdvertisementService addAgreeInAds");
+        Advertisement ads = getAdsId(Long.valueOf(id));
+        ads.setRegistrationNumberCar(registrationNumber);
+        ads.setApproval(true);
+        User user = userService.getUser(userName);
+        user.getAdvertisements().add(ads);
+        ads.getUsers().add(user);
+    }
+
+    public List<Advertisement> getAllValidAdsUser(String userName) {
+        log.info("IN AdvertisementService getAllValidAdsUser");
+        User user = userService.getUser(userName);
+        return user.getAdvertisements().stream()
+                .filter(advertisement -> advertisement.isStatusAdvertisement() == true)
+                .filter(advertisement -> advertisement.isApproval() == true)
+                .collect(Collectors.toList());
+
     }
 
     public Date convectStringToDate(String date) {

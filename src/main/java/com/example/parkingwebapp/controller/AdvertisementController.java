@@ -6,6 +6,7 @@ import com.example.parkingwebapp.models.Place;
 import com.example.parkingwebapp.models.User;
 import com.example.parkingwebapp.service.AdvertisementService;
 import com.example.parkingwebapp.service.PlaceUserService;
+import com.example.parkingwebapp.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -38,7 +39,8 @@ public class AdvertisementController {
         return "adsForm";
     }
     @PostMapping("/ads")
-    public String completedFormAds (@RequestParam String startdate, @RequestParam String enddate, @RequestParam String places) {
+    public String completedFormAds (@RequestParam String startdate, @RequestParam String enddate,
+                                    @RequestParam String places, @RequestParam String comments) {
         Authentication authentication = authenticationFacade.getAuthentication();
         Date dateStart = adsService.convectStringToDate(startdate);
         Date dateEnd = adsService.convectStringToDate(enddate);
@@ -48,6 +50,7 @@ public class AdvertisementController {
         advertisement.setNumberPlace(places);
         advertisement.setStatusAdvertisement(true);
         advertisement.setOffer(true);
+        advertisement.setText(comments);
         adsService.createAds(authentication.getName(), advertisement);
 
         return "redirect:/";

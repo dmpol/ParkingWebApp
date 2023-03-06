@@ -6,6 +6,7 @@ import com.example.parkingwebapp.models.Role;
 import com.example.parkingwebapp.models.RoleEnum;
 import com.example.parkingwebapp.models.User;
 import com.example.parkingwebapp.repository.RoleRepository;
+import com.example.parkingwebapp.service.AdvertisementService;
 import com.example.parkingwebapp.service.CarUserService;
 import com.example.parkingwebapp.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,8 @@ public class UserController {
     private UserServiceImpl userService;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private AdvertisementService adsService;
     @Autowired
     private IAuthenticationFacade authenticationFacade;
     @Autowired
@@ -85,6 +88,7 @@ public class UserController {
         model.addAttribute("roles", roles);
         model.addAttribute("places", places);
         model.addAttribute("cars", carService.getAllValidCarsUser(user.getUsername()));
+        model.addAttribute("ads", adsService.getAllValidAdsUser(user.getUsername()));
         return "me";
     }
 

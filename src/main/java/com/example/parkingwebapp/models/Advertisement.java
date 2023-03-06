@@ -21,7 +21,6 @@ public class Advertisement extends BaseModel {
     private Date endDate;
     private String numberPlace;
     private String registrationNumberCar;
-
     private String text;
     private boolean offer; //предложение
     private boolean approval; //согласие
