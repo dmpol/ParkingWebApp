@@ -89,6 +89,8 @@ public class UserController {
         model.addAttribute("places", places);
         model.addAttribute("cars", carService.getAllValidCarsUser(user.getUsername()));
         model.addAttribute("ads", adsService.getAllValidAdsUser(user.getUsername()));
+        model.addAttribute("adsOffer",adsService.getAllValidOfferAdsUser(user.getUsername()));
+        model.addAttribute("adsDemand",adsService.getAllValidDemandAdsUser(user.getUsername()));
         return "me";
     }
 

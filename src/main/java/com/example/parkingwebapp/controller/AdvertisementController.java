@@ -2,9 +2,11 @@ package com.example.parkingwebapp.controller;
 
 import com.example.parkingwebapp.facade.IAuthenticationFacade;
 import com.example.parkingwebapp.models.Advertisement;
+import com.example.parkingwebapp.models.Car;
 import com.example.parkingwebapp.models.Place;
 import com.example.parkingwebapp.models.User;
 import com.example.parkingwebapp.service.AdvertisementService;
+import com.example.parkingwebapp.service.CarUserService;
 import com.example.parkingwebapp.service.PlaceUserService;
 import com.example.parkingwebapp.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,8 @@ public class AdvertisementController {
     private AdvertisementService adsService;
     @Autowired
     private PlaceUserService placeUserService;
+    @Autowired
+    private CarUserService carService;
     @Autowired
     private IAuthenticationFacade authenticationFacade;
 
@@ -53,6 +57,31 @@ public class AdvertisementController {
         advertisement.setText(comments);
         adsService.createAds(authentication.getName(), advertisement);
 
-        return "redirect:/";
+        return "redirect:/me";
+    }
+
+    @GetMapping("/adsRequest")
+    public String getFormAdsRequest(Model model){
+        Authentication authentication = authenticationFacade.getAuthentication();
+        List<Car> carsList = carService.getAllValidCarsUser(authentication.getName());
+        model.addAttribute("cars", carsList);
+        return "adsRequestForm";
+    }
+
+    @PostMapping("/adsRequest")
+    public String completedFormAdsRequest (@RequestParam String startdate, @RequestParam String enddate,
+                                    @RequestParam String cars, @RequestParam String comments) {
+        Authentication authentication = authenticationFacade.getAuthentication();
+        Date dateStart = adsService.convectStringToDate(startdate);
+        Date dateEnd = adsService.convectStringToDate(enddate);
+        Advertisement advertisement = new Advertisement();
+        advertisement.setStartDate(dateStart);
+        advertisement.setEndDate(dateEnd);
+        advertisement.setRegistrationNumberCar(cars);
+        advertisement.setStatusAdvertisement(true);
+        advertisement.setText(comments);
+        adsService.createAds(authentication.getName(), advertisement);
+
+        return "redirect:/me";
     }
 }

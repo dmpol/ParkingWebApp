@@ -23,7 +23,7 @@
         </div>
     </div>
 </div>
-<div class="col-md-6">
+<div class="container mt-5">
     <h4>Согласованные места</h4>
     <div class="p-5 mb-4 bg-light rounded-3">
         <div th:each="el, s : ${ads}" class="alert alert-info mt-2">
@@ -32,6 +32,34 @@
             <label><i>Окончание:</i></label>
             <p th:text="${#dates.format(el.getEndDate, 'dd-MM-yyyy HH:mm')}"/>
             <p><i>Место №: </i><span th:text="${el.getNumberPlace}"/></p>
+            <p><i>Гос. знак: </i><span th:text="${el.getRegistrationNumberCar}"/></p>
+            <p><i>Комментарий: </i><span th:text="${el.getText}"/></p>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h4>Вы предложили</h4>
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div th:each="el, s : ${adsOffer}" class="alert alert-info mt-2">
+            <label><i>Начало:</i></label>
+            <p th:text="${#dates.format(el.getStartDate, 'dd-MM-yyyy HH:mm')}"/>
+            <label><i>Окончание:</i></label>
+            <p th:text="${#dates.format(el.getEndDate, 'dd-MM-yyyy HH:mm')}"/>
+            <p><i>Место №: </i><span th:text="${el.getNumberPlace}"/></p>
+            <p><i>Комментарий: </i><span th:text="${el.getText}"/></p>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h4>Вы в поиске</h4>
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div th:each="el, s : ${adsDemand}" class="alert alert-info mt-2">
+            <label><i>Начало:</i></label>
+            <p th:text="${#dates.format(el.getStartDate, 'dd-MM-yyyy HH:mm')}"/>
+            <label><i>Окончание:</i></label>
+            <p th:text="${#dates.format(el.getEndDate, 'dd-MM-yyyy HH:mm')}"/>
             <p><i>Гос. знак: </i><span th:text="${el.getRegistrationNumberCar}"/></p>
             <p><i>Комментарий: </i><span th:text="${el.getText}"/></p>
         </div>

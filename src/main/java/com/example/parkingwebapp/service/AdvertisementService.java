@@ -104,10 +104,20 @@ public class AdvertisementService {
         return false;
     }
 
-    public void addAgreeInAds(String userName, String id, String registrationNumber) {
-        log.info("IN AdvertisementService addAgreeInAds");
+    public void addAgreeOwnerCarInAds(String userName, String id, String registrationNumber) {
+        log.info("IN AdvertisementService addAgreeOwnerCarInAds");
         Advertisement ads = getAdsId(Long.valueOf(id));
         ads.setRegistrationNumberCar(registrationNumber);
+        ads.setApproval(true);
+        User user = userService.getUser(userName);
+        user.getAdvertisements().add(ads);
+        ads.getUsers().add(user);
+    }
+
+    public void addAgreeOwnerPlaceInAds(String userName, String id, String place) {
+        log.info("IN AdvertisementService addAgreeOwnerPlaceInAds");
+        Advertisement ads = getAdsId(Long.valueOf(id));
+        ads.setNumberPlace(place);
         ads.setApproval(true);
         User user = userService.getUser(userName);
         user.getAdvertisements().add(ads);
@@ -121,7 +131,26 @@ public class AdvertisementService {
                 .filter(advertisement -> advertisement.isStatusAdvertisement() == true)
                 .filter(advertisement -> advertisement.isApproval() == true)
                 .collect(Collectors.toList());
+    }
 
+    public List<Advertisement> getAllValidOfferAdsUser(String userName) {
+        log.info("IN AdvertisementService getAllValidOfferAdsUser");
+        User user = userService.getUser(userName);
+        return user.getAdvertisements().stream()
+                .filter(advertisement -> advertisement.isStatusAdvertisement() == true)
+                .filter(advertisement -> advertisement.isOffer() == true)
+                .filter(advertisement -> advertisement.isApproval() == false)
+                .collect(Collectors.toList());
+    }
+
+    public List<Advertisement> getAllValidDemandAdsUser(String userName) {
+        log.info("IN AdvertisementService getAllValidDemandAdsUser");
+        User user = userService.getUser(userName);
+        return user.getAdvertisements().stream()
+                .filter(advertisement -> advertisement.isStatusAdvertisement() == true)
+                .filter(advertisement -> advertisement.isOffer() == false)
+                .filter(advertisement -> advertisement.isApproval() == false)
+                .collect(Collectors.toList());
     }
 
     public Date convectStringToDate(String date) {
