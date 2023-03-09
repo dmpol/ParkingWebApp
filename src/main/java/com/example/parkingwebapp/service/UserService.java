@@ -4,13 +4,14 @@ import com.example.parkingwebapp.models.Role;
 import com.example.parkingwebapp.models.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
 
     User saveUser(User user);
     User getUser(String userName);
     List<User> findAll();
-    List<Role> addRoleToUser(String userName, Role role);
-    List<Role> getUserRoles(String userName);
+    Set<Role> addRoleToUser(String userName, Role role);
+    Set<Role> getUserRoles(String userName);
     boolean setStatus(String userName, boolean status);
 }

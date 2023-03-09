@@ -1,12 +1,11 @@
 package com.example.parkingwebapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Getter
@@ -18,14 +17,9 @@ public class Role extends BaseModel implements GrantedAuthority {
 
     @NonNull @Column(unique = true)
     private String name;
+    @JsonIgnore
     @ManyToMany(fetch= FetchType.EAGER, mappedBy = "roles")
-    private List<User> users = new ArrayList<>();
-
-//    @ManyToMany
-//    @JoinTable(name = "role_privileges",
-//            joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
-//    private List<Privilege> privileges;
+    private Set<User> users = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
@@ -40,16 +34,6 @@ public class Role extends BaseModel implements GrantedAuthority {
     public int hashCode() {
         return Objects.hash(super.hashCode(), name);
     }
-
-//    @Override
-//    public String toString() {
-//        return "Role{" +
-//                "name='" + name + '\'' +
-//                ", users=" + users +
-//                ", privileges=" + privileges +
-//                '}';
-//    }
-
 
     @Override
     public String toString() {

@@ -8,14 +8,16 @@
     <body>
         <header th:insert="blocks/header :: header"></header>
         <div class="container mt-5 mb-5">
-            <h2>Добавить роль</h2>
-            <form action="/set_roles" method="post">
+            <h2>Редактировать роль</h2>
+            <form th:action="@{/admin/edit_roles}" method="post">
                 <input type="text" name="userName" placeholder="Введите Имя Пользователя" class="form-control"><br>
                     <select name="roles">
                         <option th:each="el : ${roles}"
                                 th:text="${el.name}"></option>
-                    </select>
-                <button type="submit" class="btn btn-success">Добавить роль пользователю</button>
+                    </select><br>
+                <input type="radio" name="choice" value="1" checked="checked"/> Добавить роль
+                <input type="radio" name="choice" value="0"/> Удалить роль <br><br>
+                <button type="submit" class="btn btn-success">Отправить</button>
             </form>
         </div>
         <div th:insert="blocks/footer :: footer"></div>

@@ -8,10 +8,12 @@
 <body>
 <header th:insert="blocks/header :: header"></header>
 <div class="container mt-5 mb-5">
-    <h2>Удаление пользователя</h2>
-    <form th:action="@{/admin/delete_user}" method="post">
-        <input type="text" name="userName" placeholder="Введите Имя Пользователя" class="form-control"><br>
-        <button type="submit" class="btn btn-success">Удалить пользователя</button>
+    <h2>Редактировать автомобиль</h2>
+    <form th:action="@{/general/edit_car}" method="post">
+        <input type="text" name="registrationNumber" placeholder="Введите регистрационный номер" class="form-control"><br>
+        <input type="radio" name="choice" value="1" checked="checked"/> Добавить автомобиль
+        <input type="radio" name="choice" value="0"/> Удалить автомобиль <br><br>
+        <button type="submit" class="btn btn-success">Отправить</button>
     </form>
 </div>
 <div th:insert="blocks/footer :: footer"></div>

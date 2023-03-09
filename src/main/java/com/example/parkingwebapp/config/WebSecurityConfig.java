@@ -12,8 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -28,9 +26,10 @@ public class WebSecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
                         .antMatchers("/data").hasAnyRole("ADMIN","USER")
-                        .antMatchers("/delete_user").hasRole("ADMIN")
-                        .antMatchers("/set_roles").hasRole("ADMIN")
-                        .antMatchers("/", "/registration").permitAll()
+                        .antMatchers("/admin/**").hasRole("ADMIN")
+                        .antMatchers("/me").hasAnyRole("ADMIN","USER")
+                        .antMatchers("/general/**").hasAnyRole("ADMIN","USER")
+                        .antMatchers("/", "/registration", "/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

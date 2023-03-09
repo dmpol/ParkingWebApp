@@ -1,28 +1,38 @@
 package com.example.parkingwebapp.controller;
 
+import com.example.parkingwebapp.facade.IAuthenticationFacade;
+import com.example.parkingwebapp.models.Place;
 import com.example.parkingwebapp.models.Role;
 import com.example.parkingwebapp.models.RoleEnum;
 import com.example.parkingwebapp.models.User;
 import com.example.parkingwebapp.repository.RoleRepository;
+import com.example.parkingwebapp.service.AdvertisementService;
+import com.example.parkingwebapp.service.CarUserService;
 import com.example.parkingwebapp.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
 public class UserController {
     @Autowired
     private UserServiceImpl userService;
-
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private AdvertisementService adsService;
+    @Autowired
+    private IAuthenticationFacade authenticationFacade;
+    @Autowired
+    private CarUserService carService;
 
     @GetMapping("/data")
     public String getAllUsers(Model model){
@@ -48,7 +58,6 @@ public class UserController {
         u.setPassword(password);
         u.setFirstName(firstName);
         u.setLastName(lastName);
-        u.setStatus(true);
         userService.saveUser(u);
 
         Role userRole = roleRepository.findByName("USER");
@@ -60,9 +69,29 @@ public class UserController {
 
         userService.addRoleToUser(username, userRole);
         Role r = roleRepository.findByName("USER");
-        List<User> lUser = r.getUsers();
+        Set<User> lUser = r.getUsers();
         lUser.add(userService.getUser(username));
 
         return "redirect:/data";
     }
+
+    @GetMapping(value = "/me")
+    //@ResponseBody //ответ автоматически сериализуется в JSON
+    public String currentUserNameSimple(Model model){
+        Authentication authentication = authenticationFacade.getAuthentication();
+        User user = userService.getUser(authentication.getName());
+        Set<Role> roles = userService.getUserRoles(authentication.getName());
+        List<Place> places = user.getPlaces().stream()
+                .filter(place -> place.isStatusPlace() == true)
+                .collect(Collectors.toList());
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roles);
+        model.addAttribute("places", places);
+        model.addAttribute("cars", carService.getAllValidCarsUser(user.getUsername()));
+        model.addAttribute("ads", adsService.getAllValidAdsUser(user.getUsername()));
+        model.addAttribute("adsOffer",adsService.getAllValidOfferAdsUser(user.getUsername()));
+        model.addAttribute("adsDemand",adsService.getAllValidDemandAdsUser(user.getUsername()));
+        return "me";
+    }
+
 }

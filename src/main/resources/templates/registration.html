@@ -9,11 +9,11 @@
         <header th:insert="blocks/header :: header"></header>
         <div class="container mt-5 mb-5">
             <h2>Добавление нового пользователя</h2>
-            <form action="/registration" method="post">
+            <form th:action="@{/registration}" method="post">
                 <input type="text" name="firstName" placeholder="Введите Имя" class="form-control"><br>
                 <input type="text" name="lastName" placeholder="Введите Фамилию" class="form-control"><br>
                 <input type="text" name="username" placeholder="Введите номер телефона 89997775533" class="form-control"><br>
-                <input type="text" name="password" placeholder="Введите пароль" class="form-control"><br>
+                <input type="password" name="password" placeholder="Введите пароль" class="form-control"><br>
                 <button type="submit" class="btn btn-success">Добавить пользователя</button>
             </form>
         </div>
